@@ -1,0 +1,1 @@
+# colly-bolt-storage [![license](https://img.shields.io/github/license/earlzo/colly-bolt-storage.svg?style=flat-square)](https://github.com/earlzo/colly-bolt-storage/blob/master/LICENSE)[![Build Status](https://img.shields.io/travis/earlzo/colly-bolt-storage.svg?style=flat-square)](https://travis-ci.org/earlzo/colly-bolt-storage)
