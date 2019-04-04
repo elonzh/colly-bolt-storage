@@ -1,4 +1,4 @@
-# colly-bolt-storage [![license](https://img.shields.io/github/license/earlzo/colly-bolt-storage.svg?style=flat-square)](https://github.com/earlzo/colly-bolt-storage/blob/master/LICENSE)[![Build Status](https://img.shields.io/travis/earlzo/colly-bolt-storage.svg?style=flat-square)](https://travis-ci.org/earlzo/colly-bolt-storage)
+# colly-bolt-storage ![Tag](https://img.shields.io/github/tag/earlzo/colly-bolt-storage.svg?style=flat-square) [![Go Report Card](https://goreportcard.com/badge/github.com/earlzo/colly-bolt-storage)](https://goreportcard.com/report/github.com/earlzo/colly-bolt-storage?style=flat-square) [![Build Status](https://img.shields.io/travis/earlzo/colly-bolt-storage.svg?style=flat-square)](https://travis-ci.org/earlzo/colly-bolt-storage) ![Coverage](https://img.shields.io/codecov/c/github/earlzo/colly-bolt-storage.svg?style=flat-square&token=3fb8c6d7-8912-4083-9c19-38c577228b70)
 
 Simple and fast storage for colly, built on top of [bolt](https://github.com/etcd-io/bbolt#project-status).
 
@@ -24,7 +24,7 @@ Implemented interfaces:
 go get github.com/earlzo/colly-bolt-storage/...
 ```
 
-# Usage
+# Example
 
 ```go
 package main
@@ -76,3 +76,7 @@ func main() {
     q.Run(c)
 }
 ```
+
+# License
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fearlzo%2Fcolly-bolt-storage.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fearlzo%2Fcolly-bolt-storage?ref=badge_large)

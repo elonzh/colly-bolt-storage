@@ -18,6 +18,7 @@ func uint64toByteArray(n uint64) []byte {
 	return bs
 }
 
+// Storage is a implementation for colly/queue and colly/storage
 type Storage struct {
 	Path string
 	DB   *bolt.DB
