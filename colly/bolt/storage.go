@@ -2,6 +2,7 @@ package bolt
 
 import (
 	"encoding/binary"
+	"fmt"
 	"net/url"
 
 	bolt "go.etcd.io/bbolt"
@@ -9,6 +10,7 @@ import (
 
 var requestBucketName = []byte("request")
 var cookieBucketName = []byte("cookie")
+var queueBucketName = []byte("queue")
 
 func uint64toByteArray(n uint64) []byte {
 	bs := make([]byte, 8)
@@ -31,6 +33,7 @@ func (s *Storage) Init() error {
 		for _, bucketName := range [][]byte{
 			requestBucketName,
 			cookieBucketName,
+			queueBucketName,
 		} {
 			if _, err := tx.CreateBucketIfNotExists(bucketName); err != nil {
 				return err
@@ -83,4 +86,44 @@ func (s *Storage) SetCookies(u *url.URL, cookies string) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+// AddRequest adds a serialized request to the queue
+func (s *Storage) AddRequest(request []byte) error {
+	err := s.DB.Update(func(tx *bolt.Tx) error {
+		queueBucket := tx.Bucket(queueBucketName)
+		n, err := queueBucket.NextSequence()
+		if err != nil {
+			return err
+		}
+		key := uint64toByteArray(n)
+		return queueBucket.Put(key, request)
+	})
+	return err
+}
+
+// GetRequest pops the next request from the queue
+// or returns error if the queue is empty
+func (s *Storage) GetRequest() ([]byte, error) {
+	var request []byte
+	err := s.DB.Update(func(tx *bolt.Tx) error {
+		queueBucket := tx.Bucket(queueBucketName)
+		if queueBucket.Stats().KeyN == 0 {
+			return fmt.Errorf("the queue is empty")
+		}
+		c := queueBucket.Cursor()
+		_, request = c.First()
+		return c.Delete()
+	})
+	return request, err
+}
+
+// QueueSize returns with the size of the queue
+func (s *Storage) QueueSize() (int, error) {
+	var queueSize int
+	err := s.DB.View(func(tx *bolt.Tx) error {
+		queueSize = tx.Bucket(queueBucketName).Stats().KeyN
+		return nil
+	})
+	return queueSize, err
 }
