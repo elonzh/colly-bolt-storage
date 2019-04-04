@@ -1,4 +1,5 @@
 # colly-bolt-storage [![license](https://img.shields.io/github/license/earlzo/colly-bolt-storage.svg?style=flat-square)](https://github.com/earlzo/colly-bolt-storage/blob/master/LICENSE)[![Build Status](https://img.shields.io/travis/earlzo/colly-bolt-storage.svg?style=flat-square)](https://travis-ci.org/earlzo/colly-bolt-storage)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fearlzo%2Fcolly-bolt-storage.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fearlzo%2Fcolly-bolt-storage?ref=badge_shield)
 
 Simple and fast storage for colly, built on top of [bolt](https://github.com/etcd-io/bbolt#project-status).
 
@@ -76,3 +77,7 @@ func main() {
     q.Run(c)
 }
 ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fearlzo%2Fcolly-bolt-storage.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fearlzo%2Fcolly-bolt-storage?ref=badge_large)
