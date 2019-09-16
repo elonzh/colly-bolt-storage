@@ -1,29 +1,31 @@
 package bolt
 
 import (
-	"io/ioutil"
 	"net/url"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/gocolly/colly/queue"
 	"github.com/gocolly/colly/storage"
+	"go.etcd.io/bbolt"
 )
 
 func TestStorage(t *testing.T) {
-	file, err := ioutil.TempFile("", "")
+	path := filepath.Join(os.TempDir(), "test_colly_storage.boltdb")
+	db, err := bbolt.Open(path, 0666, nil)
 	if err != nil {
-		t.Fatal(err)
+		panic(err)
 	}
-	s := Storage{Path: file.Name()}
-	var _ queue.Storage = &s
-	var _ storage.Storage = &s
+	s := NewStorage(db)
+	var _ queue.Storage = s
+	var _ storage.Storage = s
 
 	defer func() {
-		if err := s.DB.Close(); err != nil {
+		if err := db.Close(); err != nil {
 			t.Fatal(err)
 		}
-		if err := os.Remove(file.Name()); err != nil {
+		if err := os.Remove(path); err != nil {
 			t.Fatal(err)
 		}
 	}()
