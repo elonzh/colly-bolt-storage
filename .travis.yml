@@ -2,7 +2,7 @@
 sudo: false
 language: go
 go:
-  - master
+  - 1.x
 go_import_path: github.com/earlzo/colly-bolt-storage
 cache:
   directories:
