@@ -14,7 +14,7 @@ Implemented interfaces:
 | Projects                      | Persistence | Queue | No Service Dependency |
 |-------------------------------|-------------|-------|-----------------------|
 | earlzo/colly-bolt-storage     | Yes         | Yes   | Yes                   |
-| velebak/colly-sqlite3-storage | Yes(actually is unusable, see https://github.com/velebak/colly-sqlite3-storage/pull/3)         | No    | Yes  |
+| velebak/colly-sqlite3-storage | Yes         | No    | Yes                   |
 | gocolly/redisstorage          | Yes         | Yes   | No                    |
 | zolamk/colly-mongo-storage    | Yes         | No    | No                    |
 
@@ -35,6 +35,7 @@ import (
     "github.com/gocolly/colly"
     "github.com/gocolly/colly/queue"
     "github.com/earlzo/colly-bolt-storage/colly/bolt"
+	"go.etcd.io/bbolt"
 )
 
 func main() {
@@ -46,20 +47,25 @@ func main() {
     }
 
     c := colly.NewCollector()
-
+    path := "colly_storage.boltdb"
+    var (
+        db *bbolt.DB
+        err error
+    )
+    if db, err = bbolt.Open(path, 0666, nil); err != nil {
+		panic(err)
+	}
     // create the storage
-    storage := &bolt.Storage{
-            Path: "test.boltdb",
-    }
+    storage := bolt.NewStorage(db)
 
     // add storage to the collector
-    err := c.SetStorage(storage)
+    err = c.SetStorage(storage)
     if err != nil {
         panic(err)
     }
 
     // close
-    defer storage.DB.Close()
+    defer db.Close()
 
     // create a new request queue
     q, _ := queue.New(2, storage)

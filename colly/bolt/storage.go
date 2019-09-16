@@ -20,17 +20,16 @@ func uint64toByteArray(n uint64) []byte {
 
 // Storage is a implementation for colly/queue and colly/storage
 type Storage struct {
-	Path string
-	DB   *bolt.DB
+	db *bolt.DB
+}
+
+func NewStorage(db *bolt.DB) *Storage {
+	return &Storage{db: db}
 }
 
 // Init initializes the storage
 func (s *Storage) Init() error {
-	var err error
-	if s.DB, err = bolt.Open(s.Path, 0666, nil); err != nil {
-		return err
-	}
-	return s.DB.Update(func(tx *bolt.Tx) error {
+	return s.db.Update(func(tx *bolt.Tx) error {
 		for _, bucketName := range [][]byte{
 			requestBucketName,
 			cookieBucketName,
@@ -46,7 +45,7 @@ func (s *Storage) Init() error {
 
 // Visited receives and stores a request ID that is visited by the Collector{}
 func (s *Storage) Visited(requestID uint64) error {
-	return s.DB.Update(func(tx *bolt.Tx) error {
+	return s.db.Update(func(tx *bolt.Tx) error {
 		requestBucket := tx.Bucket(requestBucketName)
 		return requestBucket.Put(uint64toByteArray(requestID), []byte{})
 	})
@@ -56,7 +55,7 @@ func (s *Storage) Visited(requestID uint64) error {
 // is called{}
 func (s *Storage) IsVisited(requestID uint64) (bool, error) {
 	var isVisited bool
-	err := s.DB.View(func(tx *bolt.Tx) error {
+	err := s.db.View(func(tx *bolt.Tx) error {
 		requestBucket := tx.Bucket(requestBucketName)
 		isVisited = requestBucket.Get(uint64toByteArray(requestID)) != nil
 		return nil
@@ -67,7 +66,7 @@ func (s *Storage) IsVisited(requestID uint64) (bool, error) {
 // Cookies retrieves stored cookies for a given host{}
 func (s *Storage) Cookies(u *url.URL) string {
 	var cookies string
-	err := s.DB.View(func(tx *bolt.Tx) error {
+	err := s.db.View(func(tx *bolt.Tx) error {
 		cookieBucket := tx.Bucket(cookieBucketName)
 		cookies = string(cookieBucket.Get([]byte(u.String())))
 		return nil
@@ -80,7 +79,7 @@ func (s *Storage) Cookies(u *url.URL) string {
 
 // SetCookies stores cookies for a given host{}
 func (s *Storage) SetCookies(u *url.URL, cookies string) {
-	err := s.DB.Update(func(tx *bolt.Tx) error {
+	err := s.db.Update(func(tx *bolt.Tx) error {
 		cookieBucket := tx.Bucket(cookieBucketName)
 		return cookieBucket.Put([]byte(u.String()), []byte(cookies))
 	})
@@ -91,7 +90,7 @@ func (s *Storage) SetCookies(u *url.URL, cookies string) {
 
 // AddRequest adds a serialized request to the queue
 func (s *Storage) AddRequest(request []byte) error {
-	err := s.DB.Update(func(tx *bolt.Tx) error {
+	err := s.db.Update(func(tx *bolt.Tx) error {
 		queueBucket := tx.Bucket(queueBucketName)
 		n, err := queueBucket.NextSequence()
 		if err != nil {
@@ -107,7 +106,7 @@ func (s *Storage) AddRequest(request []byte) error {
 // or returns error if the queue is empty
 func (s *Storage) GetRequest() ([]byte, error) {
 	var request []byte
-	err := s.DB.Update(func(tx *bolt.Tx) error {
+	err := s.db.Update(func(tx *bolt.Tx) error {
 		queueBucket := tx.Bucket(queueBucketName)
 		if queueBucket.Stats().KeyN == 0 {
 			return fmt.Errorf("the queue is empty")
@@ -122,7 +121,7 @@ func (s *Storage) GetRequest() ([]byte, error) {
 // QueueSize returns with the size of the queue
 func (s *Storage) QueueSize() (int, error) {
 	var queueSize int
-	err := s.DB.View(func(tx *bolt.Tx) error {
+	err := s.db.View(func(tx *bolt.Tx) error {
 		queueSize = tx.Bucket(queueBucketName).Stats().KeyN
 		return nil
 	})
