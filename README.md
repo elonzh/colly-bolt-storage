@@ -1,4 +1,4 @@
-# colly-bolt-storage ![Tag](https://img.shields.io/github/tag/earlzo/colly-bolt-storage.svg?style=flat-square) [![Go Report Card](https://goreportcard.com/badge/github.com/earlzo/colly-bolt-storage)](https://goreportcard.com/report/github.com/earlzo/colly-bolt-storage?style=flat-square) [![Build Status](https://img.shields.io/travis/earlzo/colly-bolt-storage.svg?style=flat-square)](https://travis-ci.org/earlzo/colly-bolt-storage) ![Coverage](https://img.shields.io/codecov/c/github/earlzo/colly-bolt-storage.svg?style=flat-square)
+# colly-bolt-storage ![Tag](https://img.shields.io/github/tag/elonzh/colly-bolt-storage.svg?style=flat-square) [![Go Report Card](https://goreportcard.com/badge/github.com/elonzh/colly-bolt-storage)](https://goreportcard.com/report/github.com/elonzh/colly-bolt-storage?style=flat-square) [![Build Status](https://img.shields.io/travis/elonzh/colly-bolt-storage.svg?style=flat-square)](https://travis-ci.org/elonzh/colly-bolt-storage) ![Coverage](https://img.shields.io/codecov/c/github/elonzh/colly-bolt-storage.svg?style=flat-square)
 
 Simple and fast storage for colly, built on top of [bolt](https://github.com/etcd-io/bbolt#project-status).
 
@@ -13,7 +13,7 @@ Implemented interfaces:
 
 | Projects                      | Persistence | Queue | No Service Dependency |
 |-------------------------------|-------------|-------|-----------------------|
-| earlzo/colly-bolt-storage     | Yes         | Yes   | Yes                   |
+| elonzh/colly-bolt-storage     | Yes         | Yes   | Yes                   |
 | velebak/colly-sqlite3-storage | Yes         | No    | Yes                   |
 | gocolly/redisstorage          | Yes         | Yes   | No                    |
 | zolamk/colly-mongo-storage    | Yes         | No    | No                    |
@@ -21,7 +21,7 @@ Implemented interfaces:
 # Install
 
 ```bash
-go get github.com/earlzo/colly-bolt-storage/...
+go get github.com/elonzh/colly-bolt-storage/...
 ```
 
 # Example
@@ -34,7 +34,7 @@ import (
 
     "github.com/gocolly/colly"
     "github.com/gocolly/colly/queue"
-    "github.com/earlzo/colly-bolt-storage/colly/bolt"
+    "github.com/elonzh/colly-bolt-storage/colly/bolt"
 	"go.etcd.io/bbolt"
 )
 
@@ -85,4 +85,4 @@ func main() {
 
 # License
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fearlzo%2Fcolly-bolt-storage.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fearlzo%2Fcolly-bolt-storage?ref=badge_large)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Felonzh%2Fcolly-bolt-storage.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Felonzh%2Fcolly-bolt-storage?ref=badge_large)

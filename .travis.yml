@@ -3,10 +3,10 @@ sudo: false
 language: go
 go:
   - 1.x
-go_import_path: github.com/earlzo/colly-bolt-storage
+go_import_path: github.com/elonzh/colly-bolt-storage
 cache:
   directories:
-    - $GOPATH/github.com/earlzo/colly-bolt-storage/vendor
+    - $GOPATH/github.com/elonzh/colly-bolt-storage/vendor
 
 stages:
   - lint
@@ -17,7 +17,7 @@ jobs:
   include:
     - stage: lint
       script:
-        - curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.16.0
+        - curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.22.2
         - golangci-lint run
     - stage: test
       script:
